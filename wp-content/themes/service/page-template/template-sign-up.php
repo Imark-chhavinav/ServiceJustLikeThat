@@ -75,13 +75,13 @@ get_header(); ?>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                   <input class="form-control datepicker" placeholder="Date Of Birthday" name="dob">
+                                   <input class="form-control datepicker" min-date="today" placeholder="Date Of Birthday" name="dob">
                                 </div>
                             </div>
                             
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group">
-                                    <input type="number" name="postcode" class="form-control" id="postcode" placeholder="Postal Code*"> </div>
+                                    <input type="number" min="0" name="postcode" class="form-control" id="postcode" placeholder="Postal Code*"> </div>
                             </div>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                 <div class="form-group slct">
@@ -229,7 +229,8 @@ get_header(); ?>
     });
 
   	$('.datepicker').datepicker({
-	    format: 'MM dd,yyyy'
+	    format: 'MM dd,yyyy',       
+        autoclose:true
 	   
 	});
    /* $('.multiselect').multiselect({

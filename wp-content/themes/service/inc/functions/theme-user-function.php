@@ -144,20 +144,20 @@ class Users
 		$wpdb->insert( $wpdb->prefix.'profiledetails', $Data );
 		$wpdb->flush();		
 	
-	/* 	print_R($Data);		die(); */
-		$to 		= $email;
-		$subject 	= 'Account Verification';
-		$body		= 'The email body content '.site_url().'/?verifyAccount='.$user_activation_key;
-		$headers 	= array('Content-Type: text/html; charset=UTF-8');
-		$mail 		=  wp_mail( $to, $subject, $body, $headers );
-		if( $mail )
-		{
-			$this->WPmodify->response( 1, 'Could you please check inbox for verification link' , 'No Error Found' );
-		} 
-		else
-		{
-			$this->WPmodify->response( 0, 'Please ask Admin to Activate your account as Activation Mail was not sent ' , 'Mail Sent Error' );
-		}		
+		/* 	print_R($Data);		die(); */
+			$to 		= $email;
+			$subject 	= 'Account Verification';
+			$body		= 'The email body content '.site_url().'/?verifyAccount='.$user_activation_key;
+			$headers 	= array('Content-Type: text/html; charset=UTF-8');
+			$mail 		=  wp_mail( $to, $subject, $body, $headers );
+			if( $mail )
+			{
+				$this->WPmodify->response( 1, 'Could you please check inbox for verification link' , 'No Error Found' );
+			} 
+			else
+			{
+				$this->WPmodify->response( 0, 'Please ask Admin to Activate your account as Activation Mail was not sent ' , 'Mail Sent Error' );
+			}		
 	}
 
 	public function socialLogin( $request , $ajax = NULL )
@@ -367,8 +367,6 @@ class Users
 				));			
 				$this->getprofile($request);	
 			}
-
-		
 	}
 
 	public function user_SignIn ( $request , $ajax = NULL )
@@ -383,13 +381,15 @@ class Users
 		}
 
 		if(isset($parameters['SignIn_wpnonce']))
-			{
-				/*pre( $parameters );
-				die;*/
+			{				
 				$info = array();
 				if (filter_var($parameters['username_email'], FILTER_VALIDATE_EMAIL)) 
 				{
-					 $user = get_user_by('email', $parameters['username_email']);					
+					 $user = get_user_by('email', $parameters['username_email']);	
+					 if( empty($user) )
+					 {
+					 	$this->WPmodify->web_response( 'error', 'Email does\'nt Exists ! ',200 );
+					 }				
 				} 
 				else 
 				{
@@ -421,16 +421,7 @@ class Users
 				} 
 				else 
 				{
-					$this->WPmodify->web_response( 'success', 'User Login Successfully' , site_url("/my-jobs/") );	
-					
-					/*if( $user_signon->roles[0] == 'customer' )
-					{
-						$this->WPmodify->web_response( 'success', 'User Login Successfully' , site_url("/my-jobs/") );						
-					}
-					if( $user_signon->roles[0] == 'provider' )
-					{
-						$this->WPmodify->web_response( 'success', 'User Login Successfully' , site_url("/my-jobs/") );						
-					}*/
+					$this->WPmodify->web_response( 'success', 'User Login Successfully' , site_url("/my-jobs/") );
 				}
 				
 			}
